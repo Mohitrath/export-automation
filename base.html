@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}EXPORT Automation{% endblock %} — Manifest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="frame">
+  <aside class="stub">
+    <div class="stub-head">
+      <span class="stub-mark">EX</span>
+      <div>
+        <h1>Export<br>Manifest</h1>
+        <p class="stub-sub">{{ search_keyword }}</p>
+      </div>
+    </div>
+    <nav class="stub-nav">
+      <a href="{{ url_for('home') }}" class="{{ 'active' if active=='home' }}"><span>01</span>Dashboard</a>
+      <a href="{{ url_for('upload') }}" class="{{ 'active' if active=='upload' }}"><span>02</span>Leads</a>
+      <a href="{{ url_for('cl') }}" class="{{ 'active' if active=='classify' }}"><span>03</span>Classify</a>
+      <a href="{{ url_for('send') }}" class="{{ 'active' if active=='send' }}"><span>04</span>Campaign</a>
+      <a href="{{ url_for('report') }}" class="{{ 'active' if active=='report' }}"><span>05</span>Report</a>
+      <a href="{{ url_for('settings') }}" class="{{ 'active' if active=='settings' }}"><span>06</span>Settings</a>
+    </nav>
+    <div class="stub-foot">
+      <div class="perforation" aria-hidden="true"></div>
+      <p>Manual-intake pipeline.<br>No scraping. No auto-send.</p>
+    </div>
+  </aside>
+
+  <main class="deck">
+    <header class="deck-top">
+      <div class="deck-eyebrow">{% block eyebrow %}Operations{% endblock %}</div>
+      <h2>{% block heading %}Dashboard{% endblock %}</h2>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

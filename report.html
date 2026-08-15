@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block eyebrow %}Audit Trail{% endblock %}
+{% block heading %}Report{% endblock %}
+{% block content %}
+
+<div class="stat-grid">
+  <div class="stat"><span class="n">{{ summary.total }}</span><span class="l">Total attempts</span></div>
+  <div class="stat"><span class="n">{{ summary.sent }}</span><span class="l">Sent</span></div>
+  <div class="stat"><span class="n">{{ summary.failed }}</span><span class="l">Failed</span></div>
+  <div class="stat"><span class="n">{{ summary.success_rate }}%</span><span class="l">Success rate</span></div>
+</div>
+
+<div class="card">
+  <h3>Send log</h3>
+  {% if rows %}
+  <table class="ledger">
+    <thead><tr><th>Email</th><th>Status</th><th>Timestamp (UTC)</th><th>Error</th></tr></thead>
+    <tbody>
+      {% for r in rows[-30:] %}
+      <tr>
+        <td>{{ r.email }}</td>
+        <td class="status-{{ r.status }}">{{ r.status }}</td>
+        <td>{{ r.timestamp }}</td>
+        <td>{{ r.error or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a class="btn btn-ghost" href="{{ url_for('download') }}" style="display:inline-block;">Download full CSV</a>
+  {% else %}
+  <div class="empty">No campaign has run yet.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

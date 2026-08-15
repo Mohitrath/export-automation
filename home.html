@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block eyebrow %}Manifest Overview{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="stat-grid">
+  <div class="stat"><span class="n">{{ buyer_count }}</span><span class="l">Buyers on file</span></div>
+  <div class="stat"><span class="n">{{ sent_count }}</span><span class="l">Emails sent</span></div>
+  <div class="stat"><span class="n">{{ business_count }}</span><span class="l">Business contacts</span></div>
+  <div class="stat"><span class="n">{{ individual_count }}</span><span class="l">Individual contacts</span></div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Current run</h3>
+    <p class="lead">Keyword on file: <strong>{{ search_keyword }}</strong></p>
+    <span class="stamp {{ 'stamp-dry' if not gmail_ready else 'stamp-live' }}">
+      {{ 'Dry run only' if not gmail_ready else 'Gmail ready' }}
+    </span>
+    <p class="hint" style="margin-top:14px;">Daily send cap: {{ daily_limit }} · Delay between sends: {{ send_delay }}s</p>
+  </div>
+  <div class="card">
+    <h3>Pipeline</h3>
+    <p class="lead">This build skips scraping. Move leads through the stages yourself:</p>
+    <p class="hint">1. Import a CSV on the Leads page<br>
+       2. Sort into Business / Individual on Classify<br>
+       3. Draft and dry-run a Campaign, then go live<br>
+       4. Review outcomes on Report</p>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block eyebrow %}Configuration{% endblock %}
+{% block heading %}Settings{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h3>Gmail</h3>
+  <span class="stamp {{ 'stamp-live' if gmail_ready else 'stamp-dry' }}">
+    {{ 'Configured' if gmail_ready else 'Not configured' }}
+  </span>
+  <p class="hint" style="margin-top:14px;">Account: {{ gmail_email or '—' }}</p>
+  <p class="hint">Set GMAIL_EMAIL and GMAIL_APP_PASSWORD in .env (use a Gmail App Password, not your login password) to enable live sends.</p>
+</div>
+
+<div class="card">
+  <h3>Run parameters</h3>
+  <table class="ledger">
+    <tbody>
+      <tr><td>Search keyword</td><td>{{ search_keyword }}</td></tr>
+      <tr><td>Daily send limit</td><td>{{ daily_limit }}</td></tr>
+      <tr><td>Delay between sends</td><td>{{ send_delay }}s</td></tr>
+      <tr><td>Presentation attachment</td><td>{{ presentation_path }} {{ '(found)' if presentation_exists else '(missing)' }}</td></tr>
+      <tr><td>Monitor CC</td><td>{{ monitor_cc or '—' }}</td></tr>
+    </tbody>
+  </table>
+  <p class="hint" style="margin-top:12px;">Edit these in the .env file and restart the app to change them.</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block eyebrow %}Outreach{% endblock %}
+{% block heading %}Campaign{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h3>Compose &amp; send</h3>
+  <p class="lead">Defaults to a dry run — nothing goes out until you deliberately switch to Live. Every send is checked against the log first, so no one gets emailed twice.</p>
+  <form method="post">
+    <label>Subject</label>
+    <input type="text" name="subject" value="{{ default_subject }}">
+    <label>Body</label>
+    <textarea name="body">{{ default_body }}</textarea>
+
+    <label>Audience</label>
+    <fieldset class="radio-row">
+      <label><input type="radio" name="audience" value="all" checked> All ({{ buyer_count }})</label>
+      <label><input type="radio" name="audience" value="business"> Business ({{ business_count }})</label>
+      <label><input type="radio" name="audience" value="individual"> Individual ({{ individual_count }})</label>
+    </fieldset>
+
+    <label>Mode</label>
+    <fieldset class="radio-row">
+      <label><input type="radio" name="live" value="no" checked> Dry run</label>
+      <label><input type="radio" name="live" value="yes"> Live send</label>
+    </fieldset>
+    <p class="hint">Live sends require Gmail credentials in .env and cap out at {{ daily_limit }} recipients per run.</p>
+
+    <button type="submit">Run campaign</button>
+  </form>
+</div>
+
+{% if results %}
+<div class="card">
+  <h3>Last run</h3>
+  <span class="stamp {{ 'stamp-live' if was_live else 'stamp-dry' }}">{{ 'Live send' if was_live else 'Dry run' }}</span>
+  <table class="ledger" style="margin-top:16px;">
+    <thead><tr><th>Email</th><th>Status</th><th>Note</th></tr></thead>
+    <tbody>
+      {% for email, status, note in results %}
+      <tr><td>{{ email }}</td><td class="status-{{ status }}">{{ status }}</td><td>{{ note }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}

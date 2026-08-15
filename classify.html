@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block eyebrow %}Segmentation{% endblock %}
+{% block heading %}Classify{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h3>Sort contacts</h3>
+  <p class="lead">Splits every buyer email into Business or Individual using local pattern matching against the address itself — nothing is sent to an external service to do this.</p>
+  <form method="post"><button type="submit">Run classification</button></form>
+</div>
+
+{% if ran %}
+<div class="stat-grid">
+  <div class="stat"><span class="n">{{ business_count }}</span><span class="l">Business</span></div>
+  <div class="stat"><span class="n">{{ individual_count }}</span><span class="l">Individual</span></div>
+</div>
+{% endif %}
+
+<div class="two-col">
+  <div class="card">
+    <h3>Business</h3>
+    {% if business_emails %}
+    <table class="ledger"><tbody>
+      {% for e in business_emails[:20] %}<tr><td>{{ e }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% if business_emails|length > 20 %}<p class="hint">+{{ business_emails|length - 20 }} more</p>{% endif %}
+    {% else %}<div class="empty">Run classification to populate this list.</div>{% endif %}
+  </div>
+  <div class="card">
+    <h3>Individual</h3>
+    {% if individual_emails %}
+    <table class="ledger"><tbody>
+      {% for e in individual_emails[:20] %}<tr><td>{{ e }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% if individual_emails|length > 20 %}<p class="hint">+{{ individual_emails|length - 20 }} more</p>{% endif %}
+    {% else %}<div class="empty">Run classification to populate this list.</div>{% endif %}
+  </div>
+</div>
+
+{% endblock %}

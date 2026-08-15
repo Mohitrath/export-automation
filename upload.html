@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block eyebrow %}Lead Intake{% endblock %}
+{% block heading %}Leads{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h3>Import buyers</h3>
+  <p class="lead">Upload a CSV of leads you've already gathered — trade-fair contacts, inbound inquiries, directory entries. No auto-discovery runs here.</p>
+  <form method="post" enctype="multipart/form-data">
+    <label>CSV file</label>
+    <input type="file" name="file" accept=".csv" required>
+    <p class="hint">Required columns: buyer_name, company_name, email, website, country, source_platform</p>
+    <button type="submit">Import leads</button>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Buyers on file</h3>
+  {% if buyers %}
+  <table class="ledger">
+    <thead><tr><th>Buyer</th><th>Company</th><th>Email</th><th>Country</th><th>Source</th></tr></thead>
+    <tbody>
+      {% for b in buyers[-15:] %}
+      <tr>
+        <td>{{ b.buyer_name or '—' }}</td>
+        <td>{{ b.company_name or '—' }}</td>
+        <td>{{ b.email }}</td>
+        <td>{{ b.country or '—' }}</td>
+        <td>{{ b.source_platform or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="hint" style="margin-top:12px;">Showing the last {{ buyers[-15:]|length }} of {{ buyers|length }} records.</p>
+  {% else %}
+  <div class="empty">No buyers imported yet. Upload a CSV above to get started.</div>
+  {% endif %}
+</div>
+
+{% endblock %}
